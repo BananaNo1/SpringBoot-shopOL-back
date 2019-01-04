@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/firstproject
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    initialSize: 10
+    minIdle: 10
+    maxActive: 100
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+
+
+  redis:
+    host: localhost
+    port: 6379
+    password: leis666
+    sentinel:
+      master: mymaster
+      nodes: localhost:26379
+
+  data:
+    elasticsearch:
+      cluster-nodes: localhost:9300
+
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+    host: localhost
+
+server:
+  port: 8070
+  tomcat:
+    max-threads: 2000
+    max-connections: 2000
+
+swagger2:
+  host: localhost:8070
+  url: http://localhost:8070/

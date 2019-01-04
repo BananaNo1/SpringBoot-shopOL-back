@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: local
+  jackson:
+    date-format: yyyy-MM-dd HH-mm:ss
+    time-zone: GMT+8
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+
+  data:
+    elasticsearch:
+      cluster-nodes: 120.78.3.7:9300
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.wust.graproject.entity
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  pageSizeZero: true
+  params: count=countSql
