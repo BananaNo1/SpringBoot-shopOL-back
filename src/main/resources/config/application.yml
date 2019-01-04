@@ -10,10 +10,6 @@ spring:
       force: true
       enabled: true
 
-  data:
-    elasticsearch:
-      cluster-nodes: 120.78.3.7:9300
-
 server:
   tomcat:
     uri-encoding: UTF-8

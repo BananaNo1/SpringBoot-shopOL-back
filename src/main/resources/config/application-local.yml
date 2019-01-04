@@ -1,7 +1,7 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://120.78.3.7:3306/firstproject
+    url: jdbc:mysql://120.78.3.7:3306/graproject
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,13 +13,13 @@ spring:
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
 
-#  redis:
-#    host: 120.78.3.7
-#    port: 6379
-#    password: leis666
-#    sentinel:
-#      master: mymaster
-#      nodes: 120.78.3.7:26379
+  redis:
+    host: 120.78.3.7
+    port: 6379
+    password: leis666
+    sentinel:
+      master: mymaster
+      nodes: 120.78.3.7:26379
 
   rabbitmq:
     host: 120.78.3.7
