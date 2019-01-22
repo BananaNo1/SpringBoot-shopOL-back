@@ -1,5 +1,11 @@
-package com.wust.graproject.util;
+package com.wust.graproject.service.impl;
 
+import com.wust.graproject.service.VerifyCodeService;
+import com.wust.graproject.util.RedisPrefixKeyUtil;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -8,15 +14,20 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
- * @ClassName VerifyCode
+ * @ClassName VerifyCodeServiceImpl
  * @Description TODO
  * @Author leis
- * @Date 2019/1/16 9:57
+ * @Date 2019/1/22 17:48
  * @Version 1.0
  **/
-public class VerifyCode {
+@Service
+public class VerifyCodeServiceImpl implements VerifyCodeService {
 
-    public static BufferedImage createVerifyCode() {
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Override
+    public BufferedImage createVerifyCode(String time) {
         int width = 81;
         int height = 38;
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -25,9 +36,7 @@ public class VerifyCode {
         graphics.fillRect(0, 0, width, height);
         graphics.setColor(Color.BLACK);
         graphics.drawRect(0, 0, width - 1, height - 1);
-
         Random random = new Random();
-
         for (int i = 0; i < 50; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
@@ -38,11 +47,12 @@ public class VerifyCode {
         graphics.setFont(new Font("Candara", Font.BOLD, 24));
         graphics.drawString(verifyCode, 8, 24);
         graphics.dispose();
-        calculate(verifyCode);
+        int calculate = calculate(verifyCode);
+        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.VERIFY_CODE_KEY, calculate);
         return bufferedImage;
     }
 
-    private static int calculate(String verifyCode) {
+    private int calculate(String verifyCode) {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("JavaScript");
         try {
@@ -53,9 +63,9 @@ public class VerifyCode {
         }
     }
 
-    private static char[] opr = new char[]{'+', '-', '*'};
+    private char[] opr = new char[]{'+', '-', '*'};
 
-    private static String generateVerifyCode(Random random) {
+    private String generateVerifyCode(Random random) {
         int num1 = random.nextInt(10);
         int num2 = random.nextInt(10);
         int num3 = random.nextInt(10);
