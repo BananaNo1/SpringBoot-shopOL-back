@@ -9,6 +9,22 @@ spring:
       charset: utf-8
       force: true
       enabled: true
+  mail:
+    host: smtp.qq.com
+    username: 893052525@qq.com
+    password: viypmconisglbbjg
+    default-encoding: UTF-8
+    protocol: smtp
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+
+lance:
+  mail:
+    sender: 893052525@qq.com
 
 server:
   tomcat:
@@ -24,3 +40,4 @@ pagehelper:
   supportMethodsArguments: true
   pageSizeZero: true
   params: count=countSql
+
