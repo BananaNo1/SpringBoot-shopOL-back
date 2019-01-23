@@ -9,9 +9,12 @@ import javax.annotation.Resource;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName VerifyCodeServiceImpl
@@ -23,8 +26,10 @@ import java.util.Random;
 @Service
 public class VerifyCodeServiceImpl implements VerifyCodeService {
 
+    private static final String COOKIE_NAME_VERIF= "vterifiyme";
+
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Integer> redisTemplate;
 
     @Override
     public BufferedImage createVerifyCode(String time) {
@@ -48,9 +53,27 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         graphics.drawString(verifyCode, 8, 24);
         graphics.dispose();
         int calculate = calculate(verifyCode);
-        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.VERIFY_CODE_KEY, calculate);
+        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.VERIFY_CODE_KEY + time, calculate, 10, TimeUnit.MINUTES);
         return bufferedImage;
     }
+
+    private void addCookie(HttpServletResponse  response,String token){
+        Cookie cookie =new Cookie(COOKIE_NAME_VERIF,token);
+        cookie.setMaxAge(60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
+    @Override
+    public boolean checkVerifyCode(Integer verifyCode, String time) {
+        Integer cal = redisTemplate.opsForValue().get(RedisPrefixKeyUtil.VERIFY_CODE_KEY + time);
+        if (cal == null || cal - verifyCode != 0) {
+            return false;
+        }
+        redisTemplate.delete(RedisPrefixKeyUtil.VERIFY_CODE_KEY + time);
+        return true;
+    }
+
 
     private int calculate(String verifyCode) {
         ScriptEngineManager manager = new ScriptEngineManager();

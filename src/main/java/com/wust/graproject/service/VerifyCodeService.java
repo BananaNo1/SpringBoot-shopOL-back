@@ -16,4 +16,12 @@ public interface VerifyCodeService {
      * @return
      */
     BufferedImage createVerifyCode(String time);
+
+    /**
+     * 校验验证码
+     * @param verifyCode
+     * @param time
+     * @return
+     */
+    boolean checkVerifyCode(Integer verifyCode,String time);
 }

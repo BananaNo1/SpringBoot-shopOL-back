@@ -10,8 +10,9 @@ package com.wust.graproject.global;
  **/
 public enum ResponseCode {
 
-    SUCCESS(200, "SUCCESS"),
-    ERROR(500, "ERROR"),
+    SUCCESS(0, "SUCCESS"),
+    ERROR(1, "ERROR"),
+    NEEF_LOGIN(10,"ERROR"),
     ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT");
 
     private final int code;

@@ -3,14 +3,17 @@ package com.wust.graproject.util;
 import com.wust.graproject.entity.email.EmailModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName EmailUtils
@@ -28,6 +31,9 @@ public class EmailUtils {
     @Autowired
     private JavaMailSenderImpl mailSender;
 
+    @Resource
+    private RedisTemplate redisTemplate;
+
     private static final String SYMBOLS = "0123456789";
     private static final Random RANDOM = new SecureRandom();
 
@@ -40,6 +46,7 @@ public class EmailUtils {
             helper.setTo(emailModel.getRecipient());
             helper.setSubject("欢迎注册");
             String str = getStr();
+            redisTemplate.opsForValue().set(RedisPrefixKeyUtil.EMAIL_KEY+emailModel.getRecipient(),str,120, TimeUnit.SECONDS);
             helper.setText("验证码为" + str + "(有效时间为60s,请勿告诉他人)", true);
             mailSender.send(message);
         } catch (MessagingException e) {

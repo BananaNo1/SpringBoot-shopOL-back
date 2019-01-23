@@ -20,6 +20,7 @@ spring:
     sentinel:
       master: mymaster
       nodes: 120.78.3.7:26379
+    database: 1
 
   rabbitmq:
     host: 120.78.3.7

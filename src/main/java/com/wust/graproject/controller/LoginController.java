@@ -2,15 +2,22 @@ package com.wust.graproject.controller;
 
 import com.wust.graproject.entity.User;
 import com.wust.graproject.global.ResultDataDto;
+import com.wust.graproject.service.UserService;
 import com.wust.graproject.service.VerifyCodeService;
 import com.wust.graproject.util.RedisPrefixKeyUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,18 +33,40 @@ import java.io.OutputStream;
  **/
 
 @RestController
+@RequestMapping("/user")
+@Api("用户操作")
 public class LoginController {
+
 
     @Autowired
     private VerifyCodeService verifyCodeService;
 
+    @Autowired
+    private UserService userService;
+
     @Resource
     private RedisTemplate redisTemplate;
 
+
+    @PostMapping("/login")
+    public ResultDataDto login(User user, Integer verifyCode, HttpServletRequest request, HttpServletResponse response) {
+        if (user == null) {
+            return ResultDataDto.operationErrorByMessage("参数为空");
+        }
+        boolean check = verifyCodeService.checkVerifyCode(verifyCode, (String) request.getSession().getAttribute("time"));
+        if (!check) {
+            return ResultDataDto.operationErrorByMessage("验证码不正确");
+        }
+        return userService.login(user, response);
+    }
+
     @GetMapping("/verifyCode/{time}")
-    public ResultDataDto getVerifyCode(HttpServletResponse response, @PathVariable(required = false) String time) {
-            OutputStream outputStream = null;
+    @ApiOperation(value = "获取图形验证码")
+    public ResultDataDto getVerifyCode(HttpServletResponse response, HttpSession session,
+                                       @PathVariable(required = false) String time) {
+        OutputStream outputStream = null;
         try {
+            session.setAttribute("time", time);
             BufferedImage image = verifyCodeService.createVerifyCode(time);
             outputStream = response.getOutputStream();
             ImageIO.write(image, "JPEG", outputStream);
@@ -58,10 +87,27 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public void register(@Valid User user){
-            return ;
+    @ApiOperation("用户注册")
+    public ResultDataDto register(@Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ResultDataDto.operationErrorByMessage(bindingResult.getFieldError().getDefaultMessage());
+        }
+        return userService.register(user);
     }
 
+    @PostMapping("/checkValid")
+    @ApiOperation("校验")
+    public ResultDataDto checkValid(String str, String type) {
+        if (StringUtils.isEmpty(str) || StringUtils.isEmpty(type)) {
+            return ResultDataDto.operationErrorByMessage("参数不能为空");
+        }
+        return userService.checkValid(str, type);
+    }
 
+    @PostMapping("/logout")
+    @ApiOperation("注销用户")
+    public ResultDataDto logout(HttpServletRequest request, HttpServletResponse response) {
+        return userService.logout(request, response);
+    }
 
 }

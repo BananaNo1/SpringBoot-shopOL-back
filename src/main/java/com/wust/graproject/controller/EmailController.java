@@ -3,7 +3,7 @@ package com.wust.graproject.controller;
 import com.wust.graproject.entity.email.EmailModel;
 import com.wust.graproject.util.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -20,7 +20,7 @@ public class EmailController {
     @Autowired
     private EmailUtils emailUtils;
 
-    @RequestMapping("/sendEmail")
+    @PostMapping("/sendEmail")
     public void send(String email) {
         EmailModel emailModel = new EmailModel();
         emailModel.setRecipient(email);

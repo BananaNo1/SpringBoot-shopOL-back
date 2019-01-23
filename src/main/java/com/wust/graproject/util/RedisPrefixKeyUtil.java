@@ -9,6 +9,10 @@ package com.wust.graproject.util;
  **/
 public class RedisPrefixKeyUtil {
 
-    public static final  String VERIFY_CODE_KEY="VERIFY_CODE_KEY";
-    
+    public static final String VERIFY_CODE_KEY = "VERIFY_CODE_KEY:";
+
+    public static final String EMAIL_KEY = "EMAIL:";
+
+    public static final String TOKEN = "token:";
+
 }
