@@ -30,17 +30,21 @@ public interface UserService {
     ResultDataDto register(User user);
 
     /**
-     * 校验用户名
+     * 检验str是否为type类型
      * @param str
      * @param type
      * @return
      */
     ResultDataDto checkValid(String str,String type);
-
     /**
      * 注销
      * @param request
+     * @param response
      * @return
      */
     ResultDataDto logout(HttpServletRequest request,HttpServletResponse response);
+
+    ResultDataDto resetPass(User user);
+
+    ResultDataDto checkVerify(HttpServletResponse response,String email,String verify);
 }

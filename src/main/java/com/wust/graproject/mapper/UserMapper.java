@@ -14,7 +14,7 @@ public interface UserMapper {
 
     String TABLE_NAME = "user";
 
-    String SELECT_FIELDS = "id,";
+    String SELECT_FIELDS = "id,username,password,email,phone,salt";
 
     /**
      * 主键删除
@@ -70,13 +70,23 @@ public interface UserMapper {
      * @param username
      * @return
      */
-    @Select({"select count(id) from ", TABLE_NAME, " where username = #{username}"})
+    @Select({"select id from ", TABLE_NAME, " where username = #{username}"})
     Integer checkUsername(String username);
 
     /**
-     * 查询用户
+     * 根据用户名查询
+     *
      * @param username
      * @return
      */
     User selectByUsername(String username);
+
+    /**
+     * 查找邮箱
+     *
+     * @param email
+     * @return
+     */
+    @Select({"select", SELECT_FIELDS, " from ", TABLE_NAME, " where email = #{email}"})
+    User selectByEmail(String email);
 }

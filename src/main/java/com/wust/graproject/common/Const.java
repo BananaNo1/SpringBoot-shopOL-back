@@ -10,11 +10,12 @@ package com.wust.graproject.common;
 public class Const {
 
     public static final String USERNAME = "username";
-
+    public static final String EMAIL = "email";
     public static final String SALT = "ajdijak@/";
 
-    public static final String COOKIE_NAME_TOKEN= "token";
+    public static final String COOKIE_NAME_TOKEN = "token";
+    public static final String COOKIE_NAME_REGISTER = "register";
 
-    public static final String COOKIE_DOMAIN ="51wustzds.com";
+    public static final String COOKIE_DOMAIN = "51wustzds.com";
 
 }

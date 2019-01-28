@@ -47,7 +47,7 @@ public class EmailUtils {
             helper.setSubject("欢迎注册");
             String str = getStr();
             redisTemplate.opsForValue().set(RedisPrefixKeyUtil.EMAIL_KEY+emailModel.getRecipient(),str,120, TimeUnit.SECONDS);
-            helper.setText("验证码为" + str + "(有效时间为60s,请勿告诉他人)", true);
+            helper.setText("验证码为" + str + "(有效时间为120s,请勿告诉他人)", true);
             mailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
