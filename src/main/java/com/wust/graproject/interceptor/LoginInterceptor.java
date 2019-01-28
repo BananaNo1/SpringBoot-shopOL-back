@@ -4,11 +4,9 @@ import com.wust.graproject.common.Const;
 import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.User;
 import com.wust.graproject.util.RedisPrefixKeyUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -37,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String token = null;
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals(Const.SALT)) {
+                if (cookie.getName().equals(Const.COOKIE_NAME_TOKEN)) {
                     token = cookie.getValue();
                     break;
                 }

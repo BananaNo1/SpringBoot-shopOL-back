@@ -70,7 +70,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         if (cal == null || cal - verifyCode != 0) {
             return false;
         }
-        redisTemplate.delete(RedisPrefixKeyUtil.VERIFY_CODE_KEY + time);
+       // redisTemplate.delete(RedisPrefixKeyUtil.VERIFY_CODE_KEY + time);
         return true;
     }
 

@@ -48,7 +48,6 @@ public class User implements Serializable {
     private String phone;
 
     @ApiModelProperty(value = "邮箱验证码")
-    @NotNull
     private String verify;
 
     @ApiModelProperty(value = "用户角色 1:普通 0:",example = "1")

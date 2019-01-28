@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return ResultDataDto.operationErrorByMessage("参数为空");
         }
-        User user1 = userMapper.selectByUsername(user.getUsername());
+        User user1 = userMapper.selectByEmail(user.getEmail());
         if (user1 == null) {
-            return ResultDataDto.operationErrorByMessage("用户名错误");
+            return ResultDataDto.operationErrorByMessage("用户名不存在");
         }
         String pass = DigestUtils.md5DigestAsHex((user.getPassword() + Const.SALT + user1.getSalt()).getBytes());
         if (!user1.getPassword().equals(pass)) {
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     private void addToken(HttpServletResponse response, User user, String token) {
         redisTemplate.opsForValue().set(RedisPrefixKeyUtil.TOKEN + token, user, 60 * 30, TimeUnit.SECONDS);
         Cookie cookie = new Cookie(Const.COOKIE_NAME_TOKEN, token);
-        cookie.setDomain(Const.COOKIE_DOMAIN);
+        //cookie.setDomain(Const.COOKIE_DOMAIN);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60 * 30);
@@ -93,16 +93,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultDataDto checkValid(String str, String type) {
-        if (Const.USERNAME.equals(type)) {
-            Integer checkUsername = userMapper.checkUsername(str);
-            if (checkUsername > 0) {
-                return ResultDataDto.operationErrorByMessage("用户名已存在");
-            }
-        }
+//        if (Const.USERNAME.equals(type)) {
+//            Integer checkUsername = userMapper.checkUsername(str);
+//            if (checkUsername > 0) {
+//                return ResultDataDto.operationErrorByMessage("用户名已存在");
+//            }
+//        }
         if (Const.EMAIL.equals(type)) {
             User user = userMapper.selectByEmail(str);
-            if (user == null) {
-                return ResultDataDto.operationErrorByMessage("邮箱不存在");
+            if (user != null) {
+                return ResultDataDto.operationErrorByMessage("邮箱已被注册");
             }
         }
         return ResultDataDto.operationSuccessByMessage("校验成功");
@@ -126,7 +126,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultDataDto resetPass(User user) {
-        if(StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getEmail())||StringUtils.isEmpty(user.getVerify())){
+        if(StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getEmail())
+                ||StringUtils.isEmpty(user.getVerify())){
             return ResultDataDto.operationErrorByMessage("参数为空");
         }
         String verifyCode = (String) redisTemplate.opsForValue().get(RedisPrefixKeyUtil.EMAIL_KEY + user.getEmail());
