@@ -106,8 +106,8 @@ public class LoginController {
 
     @PostMapping("/checkVerify")
     @ApiOperation("检验邮箱验证码")
-    public ResultDataDto checkVerify(HttpServletResponse response,String email,String verify){
-        return userService.checkVerify(response,email,verify);
+    public ResultDataDto checkVerify(HttpServletResponse response, String email, String verify) {
+        return userService.checkVerify(response, email, verify);
     }
 
     @PostMapping("/resetPassword")
@@ -118,11 +118,14 @@ public class LoginController {
 
     @PostMapping("/getUserInfo")
     @ApiOperation("获取用户信息")
-    public ResultDataDto<User> getUserInfo(){
-        if(userContext.getUser()!=null){
+    public ResultDataDto<User> getUserInfo() {
+        if (userContext.getUser() != null) {
+            userContext.getUser().setPassword("");
+            userContext.getUser().setSalt("");
+            userContext.getUser().setId(null);
             return ResultDataDto.operationSuccess(userContext.getUser());
         }
-       return ResultDataDto.operationErrorByMessage("未登录");
+        return ResultDataDto.operationErrorByMessage("未登录");
     }
 
     @PostMapping("/logout")
