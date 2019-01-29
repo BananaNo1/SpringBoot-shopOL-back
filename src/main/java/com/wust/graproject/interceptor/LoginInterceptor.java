@@ -3,6 +3,7 @@ package com.wust.graproject.interceptor;
 import com.wust.graproject.common.Const;
 import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.User;
+import com.wust.graproject.util.CookieUtil;
 import com.wust.graproject.util.RedisPrefixKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -33,13 +34,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = null;
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals(Const.COOKIE_NAME_TOKEN)) {
-                    token = cookie.getValue();
-                    break;
-                }
-            }
+        Cookie cookie = CookieUtil.getCookie(request, Const.COOKIE_NAME_TOKEN);
+        if (cookie != null) {
+            token = cookie.getValue();
         }
         if (token != null) {
             User user = (User) redisTemplate.opsForValue().get(RedisPrefixKeyUtil.TOKEN + token);

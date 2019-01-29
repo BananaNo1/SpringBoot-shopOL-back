@@ -1,5 +1,7 @@
 package com.wust.graproject.controller;
 
+import com.wust.graproject.annotation.NeedLogin;
+import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.User;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.service.UserService;
@@ -46,6 +48,9 @@ public class LoginController {
     @Resource
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private UserContext userContext;
+
     @PostMapping("/login")
     public ResultDataDto login(User user, Integer verifyCode, HttpServletRequest request, HttpServletResponse response) {
         if (user == null) {
@@ -87,9 +92,6 @@ public class LoginController {
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public ResultDataDto register(@Valid User user) {
-//        if (bindingResult.hasErrors()) {
-//            ResultDataDto.operationErrorByMessage(bindingResult.getFieldError().getDefaultMessage());
-//        }
         return userService.register(user);
     }
 
@@ -114,9 +116,13 @@ public class LoginController {
         return userService.resetPass(user);
     }
 
-    public ResultDataDto getUserInfo(){
-        // todo
-        return null;
+    @PostMapping("/getUserInfo")
+    @ApiOperation("获取用户信息")
+    public ResultDataDto<User> getUserInfo(){
+        if(userContext.getUser()!=null){
+            return ResultDataDto.operationSuccess(userContext.getUser());
+        }
+       return ResultDataDto.operationErrorByMessage("未登录");
     }
 
     @PostMapping("/logout")

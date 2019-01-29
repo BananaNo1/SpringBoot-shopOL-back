@@ -1,6 +1,7 @@
 package com.wust.graproject.config;
 
 import com.wust.graproject.interceptor.LoginInterceptor;
+import com.wust.graproject.interceptor.NeedLoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -20,6 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+    @Autowired
+    private NeedLoginInterceptor needLoginInterceptor;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -28,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/**");
+        registry.addInterceptor(needLoginInterceptor);
+        registry.addInterceptor(loginInterceptor);
     }
 }

@@ -5,6 +5,7 @@ import com.wust.graproject.entity.User;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.UserMapper;
 import com.wust.graproject.service.UserService;
+import com.wust.graproject.util.CookieUtil;
 import com.wust.graproject.util.RedisPrefixKeyUtil;
 import com.wust.graproject.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -111,16 +112,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultDataDto logout(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (StringUtils.equals(cookie.getName(), Const.COOKIE_NAME_TOKEN)) {
-                    cookie.setDomain(Const.COOKIE_DOMAIN);
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
+        String key = CookieUtil.deleteCookie(request,response,Const.COOKIE_NAME_TOKEN);
+        redisTemplate.delete(RedisPrefixKeyUtil.TOKEN+key);
         return ResultDataDto.operationSuccess();
     }
 
@@ -159,13 +152,4 @@ public class UserServiceImpl implements UserService {
         return ResultDataDto.operationSuccess("校验成功",email);
     }
 
-    private void addCookie(HttpServletResponse response,String verify, String token){
-        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.REGISTER+verify,token,300,TimeUnit.SECONDS);
-        Cookie cookie = new Cookie(Const.COOKIE_NAME_REGISTER,verify);
-        cookie.setDomain(Const.COOKIE_DOMAIN);
-        cookie.setMaxAge(300);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-    }
 }

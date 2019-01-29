@@ -44,7 +44,19 @@ public interface UserService {
      */
     ResultDataDto logout(HttpServletRequest request,HttpServletResponse response);
 
+    /**
+     * 重置密码
+     * @param user
+     * @return
+     */
     ResultDataDto resetPass(User user);
 
+    /**
+     * 检验邮箱验证码
+     * @param response
+     * @param email
+     * @param verify
+     * @return
+     */
     ResultDataDto checkVerify(HttpServletResponse response,String email,String verify);
 }

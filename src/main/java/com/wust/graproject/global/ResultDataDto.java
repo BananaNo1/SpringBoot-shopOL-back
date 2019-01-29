@@ -73,4 +73,8 @@ public class ResultDataDto<T> implements Serializable {
     public static <T> ResultDataDto<T> operationErrorByErrorCodeMessage(int errorCode, String errorMessage) {
         return new ResultDataDto<>(errorCode, errorMessage);
     }
+
+    public static <T> ResultDataDto<T> operationNeedLogin(){
+        return new ResultDataDto<>(ResponseCode.NEEF_LOGIN.getCode(),ResponseCode.NEEF_LOGIN.getDesc());
+    }
 }
