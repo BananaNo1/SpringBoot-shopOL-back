@@ -109,7 +109,6 @@ public class UserServiceImpl implements UserService {
         return ResultDataDto.operationSuccessByMessage("校验成功");
     }
 
-
     @Override
     public ResultDataDto logout(HttpServletRequest request, HttpServletResponse response) {
         String key = CookieUtil.deleteCookie(request,response,Const.COOKIE_NAME_TOKEN);

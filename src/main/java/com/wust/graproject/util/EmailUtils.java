@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +38,7 @@ public class EmailUtils {
     private static final String SYMBOLS = "0123456789";
     private static final Random RANDOM = new SecureRandom();
 
+    @Async
     public void sendEmail(EmailModel emailModel) {
         MimeMessage message = null;
         try {

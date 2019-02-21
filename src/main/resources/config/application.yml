@@ -33,6 +33,9 @@ server:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.wust.graproject.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
 
 pagehelper:
   helperDialect: mysql

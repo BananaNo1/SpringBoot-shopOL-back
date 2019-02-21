@@ -31,7 +31,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-            <version>2.1.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -54,7 +53,6 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
-            <version>2.1.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -191,6 +189,11 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.13.Final</version>
+        </dependency>
 
     </dependencies>
 
@@ -210,7 +213,6 @@
                     <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>

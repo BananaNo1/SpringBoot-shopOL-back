@@ -15,5 +15,10 @@ public class RedisPrefixKeyUtil {
 
     public static final String TOKEN = "token:";
 
-    public static final String REGISTER="register";
+    public static final String REGISTER = "register";
+
+    public static final String INDEX_TV = "TELEVISION:";
+
+    public static final String INDEX_BOOK = "BOOK:";
+
 }
