@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,7 +25,9 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @ApiModel
-public class Product {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 4940051959356842026L;
 
     @ApiModelProperty("主键id")
     private Integer id;

@@ -12,6 +12,7 @@ import com.wust.graproject.entity.Product;
  * @Version 1.0
  **/
 public interface IProductService {
+
     /**
      * 查询主页电器列表数据
      *
