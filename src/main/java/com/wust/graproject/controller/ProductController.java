@@ -4,7 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.wust.graproject.entity.Product;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.service.IProductService;
+import com.wust.graproject.util.RedisPrefixKeyUtil;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +27,18 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @GetMapping(path = "/indexTV")
     public ResultDataDto getIndex() {
-
-        PageInfo<Product> pageInfo = productService.selectTelevision();
+        Object o = redisTemplate.opsForValue().get(RedisPrefixKeyUtil.INDEX_TV);
+        PageInfo<Product> pageInfo = null;
+        if (o != null) {
+            pageInfo = (PageInfo<Product>) o;
+        } else {
+            pageInfo = productService.selectTelevision();
+        }
         return ResultDataDto.operationSuccess().setData(pageInfo);
     }
 
