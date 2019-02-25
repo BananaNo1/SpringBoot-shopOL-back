@@ -3,6 +3,7 @@ package com.wust.graproject.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wust.graproject.entity.Product;
+import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.BookMapper;
 import com.wust.graproject.mapper.LipstickMapper;
 import com.wust.graproject.mapper.TelevisionMapper;
@@ -55,5 +56,10 @@ public class ProductServiceImpl implements IProductService {
         List<Product> products = lipstickMapper.selectLipstickBySold();
         PageInfo<Product> pageInfo = new PageInfo<>(products);
         return pageInfo;
+    }
+
+    @Override
+    public ResultDataDto getListByCategoryId(Integer categoryId) {
+        return null;
     }
 }

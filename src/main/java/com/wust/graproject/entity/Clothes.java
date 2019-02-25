@@ -9,7 +9,7 @@ import java.util.Date;
  * @author aisino
  */
 @Data
-public class Book {
+public class Clothes {
     private Integer id;
 
     private Integer categoryId;
@@ -33,4 +33,7 @@ public class Book {
     private Date createTime;
 
     private Date updateTime;
+
+    private Integer sold;
+
 }

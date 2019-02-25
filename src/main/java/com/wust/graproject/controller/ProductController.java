@@ -64,4 +64,13 @@ public class ProductController {
         return ResultDataDto.operationSuccess().setData(pageInfo);
     }
 
+    public ResultDataDto list() {
+        return null;
+    }
+
+    public ResultDataDto detail() {
+        return null;
+    }
+
+
 }
