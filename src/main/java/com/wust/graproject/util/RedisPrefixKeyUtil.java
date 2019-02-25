@@ -21,4 +21,5 @@ public class RedisPrefixKeyUtil {
 
     public static final String INDEX_BOOK = "BOOK:";
 
+    public static final String INDEX_LIPSTICK="LIPSTICK:";
 }

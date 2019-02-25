@@ -30,9 +30,6 @@ public class ScheduleIndex {
     @Autowired
     private IProductService productService;
 
-    @Autowired
-    private IBookService bookService;
-
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -46,11 +43,14 @@ public class ScheduleIndex {
     @Scheduled(cron = "0 0 2 * * ?")
     @Async
     public void selectBook() {
-        PageInfo<Product> pageInfo = bookService.selectBook();
+        PageInfo<Product> pageInfo = productService.selectBook();
         redisTemplate.opsForValue().set(RedisPrefixKeyUtil.INDEX_BOOK, pageInfo);
     }
 
+    @Scheduled(cron = "0 0 2 * * ?")
+    @Async
     public void selectLipstick() {
-
+        PageInfo<Product> pageInfo = productService.selectLipstick();
+        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.INDEX_LIPSTICK, pageInfo);
     }
 }

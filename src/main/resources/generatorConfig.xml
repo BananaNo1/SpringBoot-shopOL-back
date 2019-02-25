@@ -49,7 +49,7 @@
         </javaClientGenerator>
 
         <!--table是指定每个表的生成策略 生成对应表及类名-->
-        <table tableName="book" domainObjectName="Book" enableCountByExample="false"
+        <table tableName="lipstick" domainObjectName="Lipstick" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <columnOverride column="detail" jdbcType="VARCHAR"/>

@@ -20,4 +20,12 @@ public interface IProductService {
      */
     PageInfo<Product> selectTelevision();
 
+    /**
+     * 查询主页电器列表数据
+     *
+     * @return
+     */
+    PageInfo<Product> selectBook();
+
+    PageInfo<Product> selectLipstick();
 }

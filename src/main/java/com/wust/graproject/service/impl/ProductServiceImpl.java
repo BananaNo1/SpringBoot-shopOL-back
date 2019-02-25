@@ -4,15 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wust.graproject.entity.Product;
 import com.wust.graproject.mapper.BookMapper;
+import com.wust.graproject.mapper.LipstickMapper;
 import com.wust.graproject.mapper.TelevisionMapper;
 import com.wust.graproject.service.IProductService;
-import com.wust.graproject.util.RedisPrefixKeyUtil;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -32,7 +30,8 @@ public class ProductServiceImpl implements IProductService {
     private BookMapper bookMapper;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private LipstickMapper lipstickMapper;
+
 
     @Override
     public PageInfo<Product> selectTelevision() {
@@ -42,4 +41,19 @@ public class ProductServiceImpl implements IProductService {
         return pageInfo;
     }
 
+    @Override
+    public PageInfo<Product> selectBook() {
+        PageHelper.startPage(1, 8);
+        List<Product> products = bookMapper.selectBookBySold();
+        PageInfo<Product> pageInfo = new PageInfo<>(products);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<Product> selectLipstick() {
+        PageHelper.startPage(1, 8);
+        List<Product> products = lipstickMapper.selectLipstickBySold();
+        PageInfo<Product> pageInfo = new PageInfo<>(products);
+        return pageInfo;
+    }
 }

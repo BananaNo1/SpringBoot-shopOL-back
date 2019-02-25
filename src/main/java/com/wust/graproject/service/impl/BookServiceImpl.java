@@ -25,7 +25,7 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public PageInfo<Product> selectBook() {
-        PageHelper.startPage(1, 10);
+        PageHelper.startPage(1, 8);
         List<Product> products = bookMapper.selectBookBySold();
         PageInfo<Product> pageInfo = new PageInfo<>(products);
         return pageInfo;
