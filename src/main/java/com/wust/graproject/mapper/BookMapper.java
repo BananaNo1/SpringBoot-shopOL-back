@@ -68,5 +68,6 @@ public interface BookMapper {
      *
      * @return
      */
-    List<Product>  selectBookBySold();
+    List<Product> selectBookBySold();
+
 }

@@ -69,4 +69,5 @@ public interface TelevisionMapper {
      * @return
      */
     List<Product> selectBySold();
+
 }

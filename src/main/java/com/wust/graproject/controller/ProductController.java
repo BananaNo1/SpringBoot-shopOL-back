@@ -28,6 +28,8 @@ public class ProductController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+
+
     @GetMapping(path = "/indexTV")
     public ResultDataDto getIndexTV() {
         Object o = redisTemplate.opsForValue().get(RedisPrefixKeyUtil.INDEX_TV);
@@ -65,11 +67,13 @@ public class ProductController {
     }
 
     public ResultDataDto list() {
+
         return null;
     }
 
-    public ResultDataDto detail() {
-        return null;
+    @RequestMapping(path ="/detail")
+    public ResultDataDto detail(Integer productId) {
+        return productService.detail(productId);
     }
 
 

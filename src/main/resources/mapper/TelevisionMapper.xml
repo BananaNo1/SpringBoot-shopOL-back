@@ -206,4 +206,5 @@
     from television
     order by sold desc
   </select>
+
 </mapper>

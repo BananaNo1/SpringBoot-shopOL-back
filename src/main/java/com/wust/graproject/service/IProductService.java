@@ -36,4 +36,6 @@ public interface IProductService {
     PageInfo<Product> selectLipstick();
 
     ResultDataDto getListByCategoryId(Integer categoryId);
+
+    ResultDataDto detail(Integer productId);
 }

@@ -7,12 +7,13 @@ import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.BookMapper;
 import com.wust.graproject.mapper.LipstickMapper;
 import com.wust.graproject.mapper.TelevisionMapper;
+import com.wust.graproject.repository.ProductEsRepository;
 import com.wust.graproject.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName ProduceServiceImpl
@@ -33,6 +34,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private LipstickMapper lipstickMapper;
 
+    @Autowired
+    private ProductEsRepository productEsRepository;
 
     @Override
     public PageInfo<Product> selectTelevision() {
@@ -60,6 +63,16 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ResultDataDto getListByCategoryId(Integer categoryId) {
+
         return null;
+    }
+
+    @Override
+    public ResultDataDto detail(Integer productId) {
+        if (productId <= 0) {
+            return ResultDataDto.operationErrorByMessage("参数错误");
+        }
+        Product product = productEsRepository.findById(productId).get();
+        return ResultDataDto.operationSuccess().setData(product);
     }
 }
