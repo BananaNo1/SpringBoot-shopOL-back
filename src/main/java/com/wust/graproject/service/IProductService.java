@@ -35,7 +35,19 @@ public interface IProductService {
      */
     PageInfo<Product> selectLipstick();
 
-    ResultDataDto getListByCategoryId(Integer categoryId);
+    ResultDataDto search(String keyword);
 
+    /**
+     * 列表页查询
+     * @param categoryId
+     * @return
+     */
+    ResultDataDto getList(Integer categoryId);
+
+    /**
+     * 详情页查询
+     * @param productId
+     * @return
+     */
     ResultDataDto detail(Integer productId);
 }

@@ -5,10 +5,12 @@ import com.wust.graproject.entity.Product;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.service.IProductService;
 import com.wust.graproject.util.RedisPrefixKeyUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,7 +29,6 @@ public class ProductController {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
 
 
     @GetMapping(path = "/indexTV")
@@ -66,14 +67,39 @@ public class ProductController {
         return ResultDataDto.operationSuccess().setData(pageInfo);
     }
 
-    public ResultDataDto list() {
+    @GetMapping(path = "/search")
+    public ResultDataDto search(@RequestParam(value = "keyword") String keyword){
+        if(StringUtils.isBlank(keyword)){
+            return ResultDataDto.operationErrorByMessage("参数异常");
+        }
+        return  null;
+    }
+
+    @GetMapping(path = "/list")
+    public ResultDataDto list(@RequestParam(value = "categoryId", required = false) String categoryId,
+                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                              @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
 
         return null;
     }
 
-    @RequestMapping(path ="/detail")
-    public ResultDataDto detail(Integer productId) {
-        return productService.detail(productId);
+    @RequestMapping(path = "/detail")
+    public ResultDataDto detail(String productId) {
+
+        if (StringUtils.isBlank(productId)) {
+            return ResultDataDto.operationErrorByMessage("参数异常");
+        }
+        Integer i = null;
+        try {
+            i = Integer.parseInt(productId);
+        } catch (Exception e) {
+            return ResultDataDto.operationErrorByMessage("参数异常");
+        }
+        if (i == null || i <= 0) {
+            return ResultDataDto.operationErrorByMessage("参数异常");
+        }
+        return productService.detail(i);
     }
 
 

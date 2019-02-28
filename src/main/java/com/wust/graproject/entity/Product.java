@@ -38,11 +38,11 @@ public class Product implements Serializable {
     private Integer id;
 
     @ApiModelProperty("分类id")
-    @Field(searchAnalyzer = "ik_smart", analyzer = "ik_smart")
+    @Field
     private Integer categoryId;
 
     @ApiModelProperty("产品名称")
-    @Field
+    @Field(searchAnalyzer = "ik_smart", analyzer = "ik_smart")
     private String name;
 
     @ApiModelProperty("副标题")

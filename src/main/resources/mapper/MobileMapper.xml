@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wust.graproject.mapper.ClothesMapper">
+<mapper namespace="com.wust.graproject.mapper.MobileMapper">
   <resultMap id="BaseResultMap" type="com.wust.graproject.entity.Product">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="category_id" jdbcType="INTEGER" property="categoryId" />
@@ -23,15 +23,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from clothes
+    from mobile
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from clothes
+    delete from mobile
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wust.graproject.entity.Clothes">
-    insert into clothes (id, category_id, name, 
+  <insert id="insert" parameterType="com.wust.graproject.entity.Mobile">
+    insert into mobile (id, category_id, name, 
       subtitle, main_image, sub_images, 
       detail, price, stock, 
       status, create_time, update_time, 
@@ -42,8 +42,8 @@
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{sold,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.wust.graproject.entity.Clothes">
-    insert into clothes
+  <insert id="insertSelective" parameterType="com.wust.graproject.entity.Mobile">
+    insert into mobile
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -127,8 +127,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wust.graproject.entity.Clothes">
-    update clothes
+  <update id="updateByPrimaryKeySelective" parameterType="com.wust.graproject.entity.Mobile">
+    update mobile
     <set>
       <if test="categoryId != null">
         category_id = #{categoryId,jdbcType=INTEGER},
@@ -169,8 +169,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wust.graproject.entity.Clothes">
-    update clothes
+  <update id="updateByPrimaryKey" parameterType="com.wust.graproject.entity.Mobile">
+    update mobile
     set category_id = #{categoryId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       subtitle = #{subtitle,jdbcType=VARCHAR},
@@ -188,7 +188,6 @@
   <select id="selectBySold" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from
-    clothes
+    from mobile
   </select>
 </mapper>

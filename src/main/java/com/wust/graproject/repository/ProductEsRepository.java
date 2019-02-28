@@ -1,6 +1,9 @@
 package com.wust.graproject.repository;
 
+
 import com.wust.graproject.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductEsRepository extends ElasticsearchRepository<Product,Integer> {
 
+     Page<Product>  findProductsByName(String name, Pageable pageable);
 }
