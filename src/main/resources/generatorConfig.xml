@@ -6,7 +6,7 @@
     <!--数据库驱动 -->
     <!-- <properties resource="jdbc.properties"/>-->
 
-    <classPathEntry location="D:\mysql-connector-java-5.1.24.jar"></classPathEntry>
+    <classPathEntry location="E:\xml\mysql-connector-java-5.1.45.jar"></classPathEntry>
 
     <!-- 用户相关 -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
@@ -49,11 +49,9 @@
         </javaClientGenerator>
 
         <!--table是指定每个表的生成策略 生成对应表及类名-->
-        <table tableName="mobile" domainObjectName="Mobile" enableCountByExample="false"
+        <table tableName="shipping" domainObjectName="Shipping" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
-            <columnOverride column="detail" jdbcType="VARCHAR"/>
-            <columnOverride column="sub_images" jdbcType="VARCHAR"/>
         </table>
 
     </context>

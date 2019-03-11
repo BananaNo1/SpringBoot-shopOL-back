@@ -42,7 +42,7 @@ public interface IProductService {
      * @param categoryId
      * @return
      */
-    ResultDataDto getList(Integer categoryId);
+    ResultDataDto getList(String categoryId);
 
     /**
      * 详情页查询

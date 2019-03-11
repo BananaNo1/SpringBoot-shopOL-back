@@ -30,7 +30,6 @@ public class ProductController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
     @GetMapping(path = "/indexTV")
     public ResultDataDto getIndexTV() {
         Object o = redisTemplate.opsForValue().get(RedisPrefixKeyUtil.INDEX_TV);
@@ -68,20 +67,22 @@ public class ProductController {
     }
 
     @GetMapping(path = "/search")
-    public ResultDataDto search(@RequestParam(value = "keyword") String keyword){
-        if(StringUtils.isBlank(keyword)){
+    public ResultDataDto search(@RequestParam(value = "keyword") String keyword) {
+        if (StringUtils.isBlank(keyword)) {
             return ResultDataDto.operationErrorByMessage("参数异常");
         }
-        return  null;
+        return null;
     }
 
     @GetMapping(path = "/list")
-    public ResultDataDto list(@RequestParam(value = "categoryId", required = false) String categoryId,
-                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                              @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
+    public ResultDataDto list(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryId", required = false) String categoryId,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
 
-        return null;
+        return productService.search(keyword);
     }
 
     @RequestMapping(path = "/detail")

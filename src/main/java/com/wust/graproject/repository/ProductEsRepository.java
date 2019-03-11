@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductEsRepository extends ElasticsearchRepository<Product,Integer> {
 
-     Page<Product>  findProductsByName(String name, Pageable pageable);
+
 }

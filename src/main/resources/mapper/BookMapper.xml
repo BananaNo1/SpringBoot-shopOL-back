@@ -18,7 +18,7 @@
     <sql id="Base_Column_List">
     id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, 
     create_time, update_time
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -28,7 +28,7 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from book
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+    </delete>
     <insert id="insert" parameterType="com.wust.graproject.entity.Book">
     insert into book (id, category_id, name, 
       subtitle, main_image, sub_images, 
@@ -40,7 +40,7 @@
       #{detail,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
-  </insert>
+    </insert>
     <insert id="insertSelective" parameterType="com.wust.graproject.entity.Book">
         insert into book
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -11,6 +11,7 @@ import com.wust.graproject.repository.ProductEsRepository;
 import com.wust.graproject.service.IProductService;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,9 +82,15 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ResultDataDto getList(Integer categoryId) {
-
-        return null;
+    public ResultDataDto getList(String categoryId) {
+        QueryBuilder queryBuilder = QueryBuilders.matchQuery("categoryId", 100044);
+        Iterable<Product> search = productEsRepository.search(queryBuilder);
+        Iterator<Product> iterator = search.iterator();
+        List<Product> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+        return ResultDataDto.operationSuccess().setData(list);
     }
 
     @Override
