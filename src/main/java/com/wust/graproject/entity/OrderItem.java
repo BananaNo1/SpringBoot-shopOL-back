@@ -1,116 +1,43 @@
 package com.wust.graproject.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author leis
+ * @Descirption
+ * @date 2019/3/11 11:40
+ */
+@Data
+@ApiModel
+@Accessors(chain = true)
 public class OrderItem {
+    @ApiModelProperty(value = "主键id")
     private Integer id;
-
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
-
+    @ApiModelProperty(value = "订单号")
     private Long orderNo;
-
+    @ApiModelProperty(value = "商品id")
     private Integer productId;
-
+    @ApiModelProperty(value = "商品名称")
     private String productName;
-
+    @ApiModelProperty(value = "商品图片")
     private String productImage;
-
+    @ApiModelProperty(value = "生成订单时的单价")
     private BigDecimal currentUnitPrice;
-
+    @ApiModelProperty(value = "商品数量")
     private Integer quantity;
-
+    @ApiModelProperty(value = "商品总价")
     private BigDecimal totalPrice;
-
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
-
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Long getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Long orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName == null ? null : productName.trim();
-    }
-
-    public String getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage == null ? null : productImage.trim();
-    }
-
-    public BigDecimal getCurrentUnitPrice() {
-        return currentUnitPrice;
-    }
-
-    public void setCurrentUnitPrice(BigDecimal currentUnitPrice) {
-        this.currentUnitPrice = currentUnitPrice;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

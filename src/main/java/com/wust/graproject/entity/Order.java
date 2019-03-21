@@ -1,146 +1,49 @@
 package com.wust.graproject.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import org.checkerframework.checker.units.qual.A;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author leis
+ * @Descirption
+ * @date 2019/3/11 11:35
+ */
+
+@Data
+@ApiModel
 public class Order {
+    @ApiModelProperty(value = "主键id")
     private Integer id;
-
+    @ApiModelProperty(value = "订单号")
     private Long orderNo;
-
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
-
+    @ApiModelProperty(value = "地址id")
     private Integer shippingId;
-
+    @ApiModelProperty(value = "支付金额")
     private BigDecimal payment;
-
+    @ApiModelProperty(value = "支付类型 1-在线支付")
     private Integer paymentType;
-
+    @ApiModelProperty(value = "支付时间")
     private Integer postage;
-
+    @ApiModelProperty(value = "订单状态 0-已取消 10-未付款 20-已付款 40-已发货 50-交易成功 60-交易关闭")
     private Integer status;
-
+    @ApiModelProperty(value = "支付时间")
     private Date paymentTime;
-
+    @ApiModelProperty(value = "发货时间")
     private Date sendTime;
-
+    @ApiModelProperty(value = "交易结束时间")
     private Date endTime;
-
+    @ApiModelProperty(value = "交易关闭时间")
     private Date closeTime;
-
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
-
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Long orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getShippingId() {
-        return shippingId;
-    }
-
-    public void setShippingId(Integer shippingId) {
-        this.shippingId = shippingId;
-    }
-
-    public BigDecimal getPayment() {
-        return payment;
-    }
-
-    public void setPayment(BigDecimal payment) {
-        this.payment = payment;
-    }
-
-    public Integer getPaymentType() {
-        return paymentType;
-    }
-
-    public void setPaymentType(Integer paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public Integer getPostage() {
-        return postage;
-    }
-
-    public void setPostage(Integer postage) {
-        this.postage = postage;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getPaymentTime() {
-        return paymentTime;
-    }
-
-    public void setPaymentTime(Date paymentTime) {
-        this.paymentTime = paymentTime;
-    }
-
-    public Date getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Date getCloseTime() {
-        return closeTime;
-    }
-
-    public void setCloseTime(Date closeTime) {
-        this.closeTime = closeTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

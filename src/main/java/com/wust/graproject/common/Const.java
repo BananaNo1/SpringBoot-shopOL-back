@@ -18,4 +18,11 @@ public class Const {
 
     public static final String COOKIE_DOMAIN = "51wustzds.com";
 
+
+    public interface Cart {
+        int CHECKED = 1;
+        int UN_CHECKED = 0;
+        String LIMIT_NUM_FAIL = "LIMIT__NUM_FAIL";
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
 }

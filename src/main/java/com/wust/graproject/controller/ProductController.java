@@ -81,7 +81,7 @@ public class ProductController {
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
-
+        // todo
         return productService.search(keyword);
     }
 

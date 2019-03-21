@@ -14,6 +14,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName LoginInterceptor
@@ -43,6 +44,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             if (user == null) {
                 return true;
             }
+            redisTemplate.opsForValue().set(RedisPrefixKeyUtil.TOKEN + token, user, 60 * 30, TimeUnit.SECONDS);
+            cookie.setMaxAge(60 * 30);
             userContext.setUser(user);
         }
         return true;

@@ -1,6 +1,7 @@
 package com.wust.graproject.service.impl;
 
 import com.wust.graproject.common.Const;
+import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.User;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.UserMapper;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserContext userContext;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -111,44 +115,93 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultDataDto logout(HttpServletRequest request, HttpServletResponse response) {
-        String key = CookieUtil.deleteCookie(request,response,Const.COOKIE_NAME_TOKEN);
-        redisTemplate.delete(RedisPrefixKeyUtil.TOKEN+key);
+        String key = CookieUtil.deleteCookie(request, response, Const.COOKIE_NAME_TOKEN);
+        redisTemplate.delete(RedisPrefixKeyUtil.TOKEN + key);
         return ResultDataDto.operationSuccess();
     }
 
     @Override
     public ResultDataDto resetPass(User user) {
-        if(StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getEmail())
-                ||StringUtils.isEmpty(user.getVerify())){
+        if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getEmail())
+                || StringUtils.isEmpty(user.getVerify())) {
             return ResultDataDto.operationErrorByMessage("参数为空");
         }
         String verifyCode = (String) redisTemplate.opsForValue().get(RedisPrefixKeyUtil.EMAIL_KEY + user.getEmail());
-        if(!StringUtils.equals(verifyCode,user.getVerify())){
+        if (!StringUtils.equals(verifyCode, user.getVerify())) {
             return ResultDataDto.operationErrorByMessage("验证码错误");
         }
         User user1 = userMapper.selectByEmail(user.getEmail());
-        String newPa= DigestUtils.md5DigestAsHex((user.getPassword()+Const.SALT+user1.getSalt()).getBytes());
+        String newPa = DigestUtils.md5DigestAsHex((user.getPassword() + Const.SALT + user1.getSalt()).getBytes());
         user1.setPassword(newPa);
         int update = userMapper.updateByPrimaryKeySelective(user1);
-        if(update <= 0){
+        if (update <= 0) {
             return ResultDataDto.operationErrorByMessage("重置密码失败");
         }
         return ResultDataDto.operationSuccessByMessage("重置密码成功");
     }
 
     @Override
-    public ResultDataDto checkVerify(HttpServletResponse response,String email, String verify) {
-        if(StringUtils.isEmpty(email) || StringUtils.isEmpty(verify)){
-                return ResultDataDto.operationErrorByMessage("参数为空");
+    public ResultDataDto checkVerify(HttpServletResponse response, String email, String verify) {
+        if (StringUtils.isEmpty(email) || StringUtils.isEmpty(verify)) {
+            return ResultDataDto.operationErrorByMessage("参数为空");
         }
-        if(!ValidatorUtil.isEmail(email)){
+        if (!ValidatorUtil.isEmail(email)) {
             return ResultDataDto.operationErrorByMessage("邮箱格式不正确");
         }
         String verifyCode = (String) redisTemplate.opsForValue().get(RedisPrefixKeyUtil.EMAIL_KEY + email);
-        if(!StringUtils.equals(verify,verifyCode)){
-            return  ResultDataDto.operationErrorByMessage("验证码不正确");
+        if (!StringUtils.equals(verify, verifyCode)) {
+            return ResultDataDto.operationErrorByMessage("验证码不正确");
         }
-        return ResultDataDto.operationSuccess("校验成功",email);
+        return ResultDataDto.operationSuccess("校验成功", email);
     }
 
+    @Override
+    public ResultDataDto getUserInformation() {
+        User user = userContext.getUser();
+        if (user == null) {
+            return ResultDataDto.operationNeedLogin();
+        }
+        user.setSalt(StringUtils.EMPTY);
+        user.setPassword(StringUtils.EMPTY);
+        user.setRole(null);
+        return ResultDataDto.operationSuccess(user);
+    }
+
+    @Override
+    public ResultDataDto updateInformation(HttpServletRequest request, User user) {
+        User currentUser = userContext.getUser();
+        if (currentUser == null) {
+            return ResultDataDto.operationNeedLogin();
+        }
+        user.setId(currentUser.getId());
+        user.setEmail(currentUser.getEmail());
+        int i = userMapper.updateByPrimaryKeySelective(user);
+        if (i <= 0) {
+            return ResultDataDto.operationErrorByMessage("更新失败");
+        }
+        Cookie cookie = CookieUtil.getCookie(request, Const.COOKIE_NAME_TOKEN);
+        String token = cookie.getValue();
+        redisTemplate.opsForValue().set(RedisPrefixKeyUtil.TOKEN + token, user, 60 * 30, TimeUnit.SECONDS);
+        userContext.clear();
+        userContext.setUser(user);
+        return ResultDataDto.operationSuccess();
+    }
+
+    @Override
+    public ResultDataDto updatePassword(String passwordOld, String passwordNew) {
+        User user = userContext.getUser();
+        if (user == null) {
+            return ResultDataDto.operationNeedLogin();
+        }
+        User user1 = userMapper.selectByEmail(user.getEmail());
+        String pass = passwordOld + Const.SALT + user1.getSalt();
+        String passMd5 = DigestUtils.md5DigestAsHex(pass.getBytes());
+        if (!StringUtils.equals(passMd5, user1.getPassword())) {
+            return ResultDataDto.operationErrorByMessage("原密码错误");
+        }
+        String passNew = passwordNew + Const.SALT + user1.getSalt();
+        user1.setPassword(DigestUtils.md5DigestAsHex(passNew.getBytes()));
+        userMapper.updateByPrimaryKeySelective(user1);
+        return ResultDataDto.operationSuccess();
+    }
 }

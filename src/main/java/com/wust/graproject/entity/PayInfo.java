@@ -1,85 +1,36 @@
 package com.wust.graproject.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.util.Date;
 
+/**
+ * @author leis
+ * @Descirption
+ * @date 2019/3/11 11:45
+ */
+@Data
+@Accessors(chain = true)
+@ApiModel
 public class PayInfo {
+    @ApiModelProperty(value = "主键id")
     private Integer id;
-
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
-
+    @ApiModelProperty(value = "订单号")
     private Long orderNo;
-
+    @ApiModelProperty(value = "支付平台")
     private Integer payPlatform;
-
+    @ApiModelProperty(value = "支付宝支付流水号")
     private String platformNumber;
-
+    @ApiModelProperty(value = "支付宝支付状态")
     private String platformStatus;
-
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
-
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Long getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Long orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Integer getPayPlatform() {
-        return payPlatform;
-    }
-
-    public void setPayPlatform(Integer payPlatform) {
-        this.payPlatform = payPlatform;
-    }
-
-    public String getPlatformNumber() {
-        return platformNumber;
-    }
-
-    public void setPlatformNumber(String platformNumber) {
-        this.platformNumber = platformNumber == null ? null : platformNumber.trim();
-    }
-
-    public String getPlatformStatus() {
-        return platformStatus;
-    }
-
-    public void setPlatformStatus(String platformStatus) {
-        this.platformStatus = platformStatus == null ? null : platformStatus.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -17,13 +17,16 @@ public interface UserService {
 
     /**
      * 登录
+     *
      * @param user
      * @param response
      * @return
      */
     ResultDataDto login(User user, HttpServletResponse response);
+
     /**
      * 注册用户
+     *
      * @param user
      * @return
      */
@@ -31,21 +34,25 @@ public interface UserService {
 
     /**
      * 检验str是否为type类型
+     *
      * @param str
      * @param type
      * @return
      */
-    ResultDataDto checkValid(String str,String type);
+    ResultDataDto checkValid(String str, String type);
+
     /**
      * 注销
+     *
      * @param request
      * @param response
      * @return
      */
-    ResultDataDto logout(HttpServletRequest request,HttpServletResponse response);
+    ResultDataDto logout(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 重置密码
+     *
      * @param user
      * @return
      */
@@ -53,10 +60,36 @@ public interface UserService {
 
     /**
      * 检验邮箱验证码
+     *
      * @param response
      * @param email
      * @param verify
      * @return
      */
-    ResultDataDto checkVerify(HttpServletResponse response,String email,String verify);
+    ResultDataDto checkVerify(HttpServletResponse response, String email, String verify);
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    ResultDataDto getUserInformation();
+
+    /**
+     * 更新用户信息
+     *
+     * @param request
+     * @param user
+     * @return
+     */
+    ResultDataDto updateInformation(HttpServletRequest request, User user);
+
+    /**
+     * 登录状态修改用户密码
+     *
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
+    ResultDataDto updatePassword(String passwordOld, String passwordNew);
 }

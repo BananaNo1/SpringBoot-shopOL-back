@@ -1,5 +1,6 @@
 package com.wust.graproject.controller;
 
+import com.wust.graproject.annotation.NeedLogin;
 import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.User;
 import com.wust.graproject.global.ResultDataDto;
@@ -116,7 +117,7 @@ public class LoginController {
 
     @PostMapping("/getUserInfo")
     @ApiOperation("获取用户信息")
-    public ResultDataDto<User> getUserInfo() {
+    public ResultDataDto getUserInfo() {
         if (userContext.getUser() != null) {
             userContext.getUser().setPassword("");
             userContext.getUser().setSalt("");
@@ -126,10 +127,30 @@ public class LoginController {
         return ResultDataDto.operationErrorByMessage("未登录");
     }
 
+
     @PostMapping("/logout")
     @ApiOperation("注销用户")
     public ResultDataDto logout(HttpServletRequest request, HttpServletResponse response) {
         return userService.logout(request, response);
+    }
+
+    @PostMapping("/getUserInformation")
+    @NeedLogin
+    public ResultDataDto getUserInformation() {
+        return userService.getUserInformation();
+    }
+
+
+    @PostMapping("/updateInformation")
+    @NeedLogin
+    public ResultDataDto updateInformation(HttpServletRequest request, User user) {
+        return userService.updateInformation(request, user);
+    }
+
+    @PostMapping("/updatePassword")
+    @NeedLogin
+    public ResultDataDto updatePassword(String passwordOld, String passwordNew) {
+        return userService.updatePassword(passwordOld, passwordNew);
     }
 
 }
