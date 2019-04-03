@@ -82,9 +82,14 @@ public class Es {
     @Test
     public void search() {
         MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", "手机");
-        Iterable<Product> search = productEsRepository.search(matchQueryBuilder,PageRequest.of(1,20));
+        Iterable<Product> search = productEsRepository.search(matchQueryBuilder, PageRequest.of(1, 20));
         PageInfo<Product> pageInfo = new PageInfo<>(((Page<Product>) search).getContent());
         pageInfo.setSize(((Page<Product>) search).getTotalPages());
     }
 
+    @Test
+    public void getList() {
+        QueryBuilder queryBuilder = QueryBuilders.matchQuery("categoryId", 100044);
+        Iterable<Product> search = productEsRepository.search(queryBuilder);
+    }
 }

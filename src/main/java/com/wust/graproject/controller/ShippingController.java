@@ -41,7 +41,7 @@ public class ShippingController {
         return shippingService.update(shipping);
     }
 
-    @PostMapping("delete")
+    @PostMapping("/delete")
     @NeedLogin
     public ResultDataDto delete(Integer shippingId) {
         return shippingService.delete(shippingId);

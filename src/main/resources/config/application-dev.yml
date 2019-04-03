@@ -15,25 +15,25 @@ spring:
 
 
   redis:
-    host: localhost
+    host: 127.0.0.1
     port: 6379
     password: leis666
     sentinel:
       master: mymaster
-      nodes: localhost:26379
+      nodes: 127.0.0.1:26379
 
   data:
     elasticsearch:
-      cluster-nodes: localhost:9300
+      cluster-nodes: 127.0.0.1:9300
 
   rabbitmq:
     port: 5672
     username: guest
     password: guest
-    host: localhost
+    host: 127.0.0.1
 
 server:
-  port: 8070
+  port: 8080
   tomcat:
     max-threads: 2000
     max-connections: 2000

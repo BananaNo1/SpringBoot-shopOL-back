@@ -113,4 +113,11 @@ public interface CartMapper {
      */
     int checkedOrUncheckedProduct(@Param("userId") Integer userId, @Param("productId") Integer productIds,
                                   @Param("checked") Integer checked);
+
+    /**
+     * 查询购物车中被选中的商品
+     * @param id
+     * @return
+     */
+    List<Cart> selectCheckedCartByUserId(Integer id);
 }

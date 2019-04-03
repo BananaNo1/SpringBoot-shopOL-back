@@ -1,8 +1,12 @@
 package com.wust.graproject.mapper;
 
 import com.wust.graproject.entity.Order;
+import com.wust.graproject.entity.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author ManMan
@@ -57,4 +61,29 @@ public interface OrderMapper {
      * @return
      */
     int updateByPrimaryKey(Order record);
+
+    /**
+     * 查询订单列表
+     *
+     * @param userId
+     * @return
+     */
+    List<Order> selectByUserId(Integer userId);
+
+    /**
+     * 获取订单详情
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    Order selectByUserIdAndOrderNo(@Param("userId") Integer userId, @Param("orderNo") Long orderNo);
+
+    /**
+     * 根据订单号查询订单
+     *
+     * @param orderNo
+     * @return
+     */
+    Order selectByOrderNo(Long orderNo);
 }

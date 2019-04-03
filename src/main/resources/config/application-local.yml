@@ -31,6 +31,8 @@ spring:
   data:
     elasticsearch:
      cluster-nodes: 120.78.3.7:9300
+     repositories:
+       enabled: true
 
 server:
   port: 8070
@@ -42,5 +44,5 @@ swagger2:
   host: localhost:8070
   url: http://localhost:8070/
 
-imageHost: image.51wustzds.com
+imageHost: http://image.51wustzds.com
 
