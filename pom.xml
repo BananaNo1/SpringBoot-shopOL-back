@@ -246,6 +246,20 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/alipay-sdk-java-3.3.0.jar</systemPath>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.solr/solr-solrj -->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>7.7.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

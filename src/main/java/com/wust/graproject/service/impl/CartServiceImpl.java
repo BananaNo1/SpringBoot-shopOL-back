@@ -12,8 +12,8 @@ import com.wust.graproject.entity.vo.CartVo;
 import com.wust.graproject.global.ResponseCode;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.CartMapper;
-import com.wust.graproject.repository.ProductEsRepository;
 import com.wust.graproject.service.ICartService;
+import com.wust.graproject.service.ISolrService;
 import com.wust.graproject.util.BigDecimalUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +38,13 @@ public class CartServiceImpl implements ICartService {
 
     @Autowired
     private CartMapper cartMapper;
+//
+//    @Autowired
+//    private ProductEsRepository esRepository;
+
 
     @Autowired
-    private ProductEsRepository esRepository;
+    private ISolrService solrService;
 
     @Value("${imageHost}")
     private String imageHost;
@@ -62,7 +66,8 @@ public class CartServiceImpl implements ICartService {
                 cartProductVo.setId(cart.getId());
                 cartProductVo.setUserId(user.getId());
                 cartProductVo.setProductId(cart.getProductId());
-                Product product = esRepository.findById(cart.getProductId()).get();
+//               esRepository.findById(cart.getProductId()).get();
+                Product product = solrService.searchById(cart.getProductId());
                 if (product != null) {
                     cartProductVo.setProductName(product.getName());
                     cartProductVo.setProductMainImage(product.getMainImage());

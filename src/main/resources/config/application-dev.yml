@@ -18,9 +18,9 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: leis666
-    sentinel:
-      master: mymaster
-      nodes: 127.0.0.1:26379
+#    sentinel:
+#      master: mymaster
+#      nodes: 127.0.0.1:26379
 
   data:
     elasticsearch:

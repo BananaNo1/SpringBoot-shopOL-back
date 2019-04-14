@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  * @Date 2019/2/26 15:36
  * @Version 1.0
  **/
-@Repository
-public interface ProductEsRepository extends ElasticsearchRepository<Product,Integer> {
-
-
-}
+//@Repository
+//public interface ProductEsRepository extends ElasticsearchRepository<Product,Integer> {
+//
+//
+//}

@@ -92,7 +92,7 @@ public class OrderController {
         } catch (AlipayApiException e) {
             log.error("支付宝回调异常", e);
         }
-        ResultDataDto resultDataDto = orderService.apipayCallBack(params);
+        ResultDataDto resultDataDto = orderService.alipayCallBack(params);
         if (resultDataDto.isSuccess()) {
             return Const.AlipayCallback.RESPONSE_SUCCESS;
         }

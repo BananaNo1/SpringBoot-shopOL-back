@@ -18,14 +18,16 @@ import com.google.common.collect.Maps;
 import com.wust.graproject.common.Const;
 import com.wust.graproject.common.UserContext;
 import com.wust.graproject.entity.*;
+import com.wust.graproject.entity.dto.MqDto;
 import com.wust.graproject.entity.vo.OrderItemVo;
 import com.wust.graproject.entity.vo.OrderProductVo;
 import com.wust.graproject.entity.vo.OrderVo;
 import com.wust.graproject.entity.vo.ShippingVo;
 import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.*;
-import com.wust.graproject.repository.ProductEsRepository;
+import com.wust.graproject.rabbitmq.AlipayCallBackProducer;
 import com.wust.graproject.service.IOrderService;
+import com.wust.graproject.service.ISolrService;
 import com.wust.graproject.util.BigDecimalUtil;
 import com.wust.graproject.util.DateTimeUtil;
 import com.wust.graproject.util.FastDfsUtil;
@@ -89,7 +91,11 @@ public class OrderServiceImpl implements IOrderService {
     private PayInfoMapper payInfoMapper;
 
     @Autowired
-    private ProductEsRepository esRepository;
+    private ISolrService solrService;
+
+    @Autowired
+    private AlipayCallBackProducer alipayCallBackProducer;
+
 
     @Value("${imageHost}")
     private String imageHost;
@@ -284,6 +290,7 @@ public class OrderServiceImpl implements IOrderService {
                 String qr = "";
                 try {
                     qr = FastDfsUtil.upload(qrPath, "png");
+                    log.info("qr**********" + qr);
                 } catch (IOException e) {
                     log.error("上传二维码异常", e);
                 } catch (MyException e) {
@@ -310,7 +317,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public ResultDataDto apipayCallBack(Map<String, String> params) {
+    public ResultDataDto alipayCallBack(Map<String, String> params) {
         Long orderNo = Long.parseLong(params.get("out_trade_no"));
         String tradeNo = params.get("trade_no");
         String tradeStatus = params.get("trade_status");
@@ -326,15 +333,14 @@ public class OrderServiceImpl implements IOrderService {
             order.setStatus(Const.OrderStatusEnum.PAID.getCode());
             orderMapper.updateByPrimaryKeySelective(order);
         }
-        PayInfo payInfo = new PayInfo();
-        payInfo.setUserId(order.getUserId());
-        payInfo.setOrderNo(order.getOrderNo());
-        payInfo.setPayPlatform(Const.PayPlatformEnum.ALIPAY.getCode());
-        payInfo.setPlatformNumber(tradeNo);
-        payInfo.setPlatformStatus(tradeStatus);
-
-        payInfoMapper.insert(payInfo);
-        return null;
+        MqDto mqDto = new MqDto();
+        mqDto.setId(order.getId());
+        mqDto.setOrderNo(order.getOrderNo());
+        mqDto.setPlatformNumber(tradeNo);
+        mqDto.setUserId(order.getUserId());
+        mqDto.setPlatformStatus(tradeStatus);
+        alipayCallBackProducer.sendMsg(mqDto);
+        return ResultDataDto.operationSuccess();
     }
 
     @Override
@@ -448,13 +454,15 @@ public class OrderServiceImpl implements IOrderService {
 
     private void reduceProductStockAndIncreSales(List<OrderItem> orderItemList) {
         for (OrderItem orderItem : orderItemList) {
-            Product product = esRepository.findById(orderItem.getProductId()).get();
+            Product product = solrService.searchById(orderItem.getProductId());
+//             esRepository.findById(orderItem.getProductId()).get();
             product.setStock(product.getStock() - orderItem.getQuantity());
             if (product.getSold() == null) {
                 product.setSold(0);
             }
             product.setSold(product.getSold() + orderItem.getQuantity());
-            esRepository.save(product);
+            solrService.add(product);
+//            esRepository.save(product);
         }
     }
 
@@ -496,7 +504,8 @@ public class OrderServiceImpl implements IOrderService {
 
         for (Cart cartItem : carts) {
             OrderItem orderItem = new OrderItem();
-            Product product = esRepository.findById(cartItem.getProductId()).get();
+            Product product = solrService.searchById(cartItem.getProductId());
+            // esRepository.findById(cartItem.getProductId()).get();
             if (Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()) {
                 return ResultDataDto.operationErrorByMessage("产品" + product.getName() + "不是在售状态");
             }

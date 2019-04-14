@@ -1,3 +1,4 @@
+/*
 package com.wust.graproject.repository;
 
 import com.github.pagehelper.PageInfo;
@@ -21,13 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+*/
 /**
  * @ClassName Es
  * @Description TODO
  * @Author leis
  * @Date 2019/2/26 15:46
  * @Version 1.0
- **/
+ **//*
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class Es {
@@ -93,3 +96,4 @@ public class Es {
         Iterable<Product> search = productEsRepository.search(queryBuilder);
     }
 }
+*/

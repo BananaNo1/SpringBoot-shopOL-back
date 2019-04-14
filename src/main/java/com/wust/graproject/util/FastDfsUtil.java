@@ -1,12 +1,18 @@
 package com.wust.graproject.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.csource.common.MyException;
 import org.csource.fastdfs.*;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ClassRelativeResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author leis
@@ -24,11 +30,17 @@ public class FastDfsUtil {
     private static StorageServer storageServer = null;
     private static StorageClient storageClient = null;
 
+
     static {
         try {
-            String filePath = new ClassPathResource("fdfs_client.conf").getFile().getAbsolutePath();
-            ;
-            ClientGlobal.init(filePath);
+            ClassPathResource resource = new ClassPathResource("fdfs_client.conf");
+            String tempPath = System.getProperty("java.io.tmpdir") + System.currentTimeMillis();
+            InputStream inputStream = resource.getInputStream();
+            /*String filePath = new ClassPathResource("fdfs_client.conf").getFile().getAbsolutePath();*/
+            //Resource resource =  ResourceLoader().getResource("classpath:/fdfs_client.conf");
+            File f = new File(tempPath);
+            IOUtils.copy(resource.getInputStream(), new FileOutputStream(f));
+            ClientGlobal.init(f.getAbsolutePath());
             trackerClient = new TrackerClient();
             trackerServer = trackerClient.getConnection();
             storageServer = trackerClient.getStoreStorage(trackerServer);
@@ -39,7 +51,11 @@ public class FastDfsUtil {
     }
 
     public static String upload(String filePath, String type) throws IOException, MyException {
+        log.info("***************");
+        log.info("filePath:" + filePath + "type:" + type);
         String[] upload_file = storageClient.upload_file(filePath, type, null);
+        log.info("upload_file" + upload_file);
+        log.info("*************");
         return upload_file == null ? null : upload_file[1];
     }
 

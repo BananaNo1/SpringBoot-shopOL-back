@@ -7,20 +7,16 @@ import com.wust.graproject.global.ResultDataDto;
 import com.wust.graproject.mapper.BookMapper;
 import com.wust.graproject.mapper.LipstickMapper;
 import com.wust.graproject.mapper.TelevisionMapper;
-import com.wust.graproject.repository.ProductEsRepository;
 import com.wust.graproject.service.IProductService;
+import com.wust.graproject.service.ISolrService;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,8 +38,11 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private LipstickMapper lipstickMapper;
 
+//    @Autowired
+//    private ProductEsRepository productEsRepository;
+
     @Autowired
-    private ProductEsRepository productEsRepository;
+    private ISolrService solrService;
 
     @Override
     public PageInfo<Product> selectTelevision() {
@@ -71,25 +70,27 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ResultDataDto search(String keyword) {
-        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", keyword);
-        Iterable<Product> search = productEsRepository.search(matchQueryBuilder);
-        Iterator<Product> iterator = search.iterator();
-        List<Product> list = new ArrayList<>();
-        while (iterator.hasNext()) {
-            list.add(iterator.next());
-        }
+//        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", keyword);
+//        Iterable<Product> search = productEsRepository.search(matchQueryBuilder);
+        List<Product> list = solrService.searchByName(keyword, 1, 20);
+//        Iterator<Product> iterator = search.iterator();
+//        List<Product> list = new ArrayList<>();
+//        while (iterator.hasNext()) {
+//            list.add(iterator.next());
+//        }
         return ResultDataDto.operationSuccess().setData(list);
     }
 
     @Override
     public ResultDataDto getList(String categoryId) {
-        QueryBuilder queryBuilder = QueryBuilders.matchQuery("categoryId", 100044);
-        Iterable<Product> search = productEsRepository.search(queryBuilder);
-        Iterator<Product> iterator = search.iterator();
-        List<Product> list = new ArrayList<>();
-        while (iterator.hasNext()) {
-            list.add(iterator.next());
-        }
+//        QueryBuilder queryBuilder = QueryBuilders.matchQuery("categoryId", 100044);
+//        Iterable<Product> search = productEsRepository.search(queryBuilder);
+        List<Product> list = solrService.searchByCategoryId(categoryId, 1, 20);
+//        Iterator<Product> iterator = search.iterator();
+//        List<Product> list = new ArrayList<>();
+//        while (iterator.hasNext()) {
+//            list.add(iterator.next());
+//        }
         return ResultDataDto.operationSuccess().setData(list);
     }
 
@@ -98,7 +99,8 @@ public class ProductServiceImpl implements IProductService {
         if (productId <= 0) {
             return ResultDataDto.operationErrorByMessage("参数错误");
         }
-        Product product = productEsRepository.findById(productId).get();
+        Product product = solrService.searchById(productId);
+        // productEsRepository.findById(productId).get();
         return ResultDataDto.operationSuccess().setData(product);
     }
 }

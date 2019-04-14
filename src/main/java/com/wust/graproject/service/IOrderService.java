@@ -65,7 +65,7 @@ public interface IOrderService {
      * @param params
      * @return
      */
-    ResultDataDto apipayCallBack(Map<String, String> params);
+    ResultDataDto alipayCallBack(Map<String, String> params);
 
     /**
      * 查询订单状态

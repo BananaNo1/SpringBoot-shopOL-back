@@ -1,10 +1,5 @@
 package com.wust.graproject.config.mq;
 
-import com.wust.graproject.util.MqKeyUtil;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -67,21 +62,5 @@ public class RabbitMqConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         return rabbitTemplate;
     }
-
-    @Bean
-    public DirectExchange directExchangeES() {
-        return new DirectExchange(MqKeyUtil.DIRECT_EXCHANGE_ES);
-    }
-
-    @Bean
-    public Queue queueES() {
-        return new Queue(MqKeyUtil.ROUTING_KEY_ES, true);
-    }
-
-    @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queueES()).to(directExchangeES()).with(MqKeyUtil.QUEUE_ES);
-    }
-
 
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -29,6 +30,7 @@ import java.util.Date;
 @ToString
 @ApiModel
 @Document(indexName = "graproject", type = "product")
+@Accessors(chain = true)
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 4940051959356842026L;
