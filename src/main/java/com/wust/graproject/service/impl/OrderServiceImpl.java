@@ -462,6 +462,7 @@ public class OrderServiceImpl implements IOrderService {
             }
             product.setSold(product.getSold() + orderItem.getQuantity());
             solrService.add(product);
+
 //            esRepository.save(product);
         }
     }

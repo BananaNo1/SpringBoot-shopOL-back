@@ -73,7 +73,7 @@ public class ProductServiceImpl implements IProductService {
 //        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", keyword);
 //        Iterable<Product> search = productEsRepository.search(matchQueryBuilder);
         List<Product> list = solrService.searchByName(keyword, 1, 20);
-//        Iterator<Product> iterator = search.iterator();
+////        Iterator<Product> iterator = search.iterator();
 //        List<Product> list = new ArrayList<>();
 //        while (iterator.hasNext()) {
 //            list.add(iterator.next());

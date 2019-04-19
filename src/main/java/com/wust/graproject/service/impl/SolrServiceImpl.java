@@ -72,7 +72,7 @@ public class SolrServiceImpl implements ISolrService {
     @Override
     public List<Product> searchByCategoryId(String categoryId, Integer currentPage, Integer rows) {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.set("q", "categoryId:" + categoryId);
+        solrQuery.set("q", "category_id:" + categoryId);
         Integer start = (currentPage - 1) * rows;
         solrQuery.setStart(start);
         solrQuery.setRows(rows);

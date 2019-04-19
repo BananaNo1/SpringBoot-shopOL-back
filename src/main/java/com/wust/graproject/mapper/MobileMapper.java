@@ -51,7 +51,7 @@ public interface MobileMapper {
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(Mobile record);
+    int updateByPrimaryKeySelective(Product record);
 
     /**
      * 根据主键更新
@@ -67,4 +67,6 @@ public interface MobileMapper {
      * @return
      */
     List<Product> selectBySold();
+
+    List<Product> selectCom();
 }

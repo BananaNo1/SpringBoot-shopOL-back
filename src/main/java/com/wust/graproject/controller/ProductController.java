@@ -82,7 +82,7 @@ public class ProductController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
         // todo
-        return productService.search(keyword);
+        return keyword==null?productService.getList(categoryId):productService.search(keyword);
     }
 
     @RequestMapping(path = "/detail")
