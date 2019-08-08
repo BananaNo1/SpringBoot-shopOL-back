@@ -11,8 +11,9 @@ spring:
       enabled: true
   mail:
     host: smtp.qq.com
-    username: 893052525@qq.com
-    password: tpeqqkpyzhbubcbd
+    # 替换成自己的
+    username: 
+    password: 
     default-encoding: UTF-8
     protocol: smtps
     properties:
@@ -31,7 +32,7 @@ spring:
 
 lance:
   mail:
-    sender: 893052525@qq.com
+    sender: 
 
 server:
   tomcat:
